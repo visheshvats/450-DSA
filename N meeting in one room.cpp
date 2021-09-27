@@ -3,47 +3,66 @@
 using namespace std;
 
  // } Driver Code Ends
-
-class da
-{
-    public:
-
-    int start;
-    int end;
-    int index;
-
-};
 class Solution
 {
     public:
     //Function to find the maximum number of meetings that can
     //be performed in a meeting room.
-
-    bool com(da a, da b)
+     bool com(tuple<int,int,int> a, tuple<int,int,int> b)
     {
-        if(a.end())
+        if(get<1>(a)<get<1>(b)) return true;
+        else if(get<1>(a)==get<1>(b))
+        {
+            if(get<2>(a)<get<2>(b))
+                return true;
+        }
+
+        else
+            return false;
+
 
     }
     int maxMeetings(int start[], int end[], int n)
     {
         // Your code here
-        vector<da> tt;
+        int count =0;
+        if (n==0)
+        {
+            return count;
+
+        }
+
+        tuple<int,int,int> a;
+
+        vector<tuple<int,int,int>> tt;
         
 
         for(int i=0;i<n;i++)
         {
-            da t;
-            t.start=start[i]; 
-            t.end=end[i]; 
-            t.index=i+1; 
+            tuple<int,int,int> t;
+            get<0>(t)=end[i]; 
+            get<1>(t)=i+1; 
+            get<2>(t)=start[i]; 
+             
             tt.push_back(t);
 
         }
 
-        sort(tt.begin(),tt.end(),com)
-        {
+        sort(tt.begin(),tt.end());
+        
+        count++;
+        int x=get<0>(tt[0]);
 
+        for(int i=1;i<n;i++)
+        {
+            if(get<2>(tt[i])>x)
+            {
+                count++;
+                x=get<0>(tt[i]);
+            }
         }
+
+        return count;
 
 
 
