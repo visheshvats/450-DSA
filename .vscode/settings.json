@@ -3,6 +3,11 @@
         "sstream": "cpp",
         "regex": "cpp",
         "random": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "vector": "cpp",
+        "utility": "cpp",
+        "iosfwd": "cpp",
+        "xlocale": "cpp",
+        "xstring": "cpp"
     }
 }
