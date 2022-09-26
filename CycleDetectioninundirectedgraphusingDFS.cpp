@@ -8,10 +8,19 @@ class Solution {
     
   public:
 
-    bool dfscycle(int i, int V, vector<int> adj[], vector<bool> &vis)
+    bool dfscycle(int i,int par, int V, vector<int> adj[], vector<bool> &vis)
     {
         vis[i]=true;
-        
+        for(auto it : adj[i])
+        {
+          if(!vis[it])
+          {
+            if(dfscycle(it, i, V, adj,vis))
+              return true;
+            else if(it!=par)
+              return true;
+          }
+        }
 
         return false;
     }
@@ -24,7 +33,7 @@ class Solution {
         {
             if(!vis[i])
             {
-                if(dfscycle(i,V,adj,vis))
+                if(dfscycle(i,-1,V,adj,vis))
                     return true;
             }
                 
