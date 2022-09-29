@@ -9,7 +9,7 @@
 
 
 //Function to return a list of integers denoting spiral traversal of matrix. 
-int* spirallyTraverse(int r, int c, int matrix[][c])
+int* spirallyTraverse(int r, int c, int * matrix[])
 {   
     
 }
