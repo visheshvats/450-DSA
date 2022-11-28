@@ -34,6 +34,21 @@ vector<int> nodeSearching(vector<vector<int>>&edges, vector<int>&v, vector<vecto
 
     dfs(1,adj, parent, 1);
 
+    vector<int> ans(queries.size());
+
+    for(int i=0;i<queries.size();i++)
+    {
+        int node = queries[i][0];
+        int val = queries[i][1];
+
+        if(val>v[0])
+        {
+            ans.push_back(-1);
+            continue;
+        }
+        
+    }
+
 
 
     
