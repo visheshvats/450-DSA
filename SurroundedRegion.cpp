@@ -22,7 +22,7 @@ public:
                     }
 
                 }
-                
+
     void solve(vector<vector<char>>& board) {
 
         int n = board.size();
@@ -61,6 +61,20 @@ public:
             }
 
         }
+
+        vector<vector<char>> ans (n,vector<char>(m,'X'));
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(vis[i][j]==1)
+                    ans[i][j]='O';
+            }
+        }
+
+
+        return ans;
 
         
     }
