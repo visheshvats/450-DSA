@@ -3,7 +3,8 @@ using namespace std;
 
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+    
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
 
         vector<int> adj[numCourses];
         for(int i=0;i<prerequisites.size();i++)
@@ -50,10 +51,12 @@ public:
         }
 
         if(topo.size()==numCourses)
-            return true;
-
+            return topo;
         else
-            return false;
+        {
+            vector<int> ans;
+            return ans;
+        }
         
     }
 };
