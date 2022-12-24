@@ -9,6 +9,7 @@
         "iosfwd": "cpp",
         "xlocale": "cpp",
         "xstring": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "string_view": "cpp"
     }
 }
