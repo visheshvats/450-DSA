@@ -13,15 +13,41 @@ struct TreeNode {
 
 class Solution {
 public:
-    bool solve(TreeNode* leftnode, TreeNode* rightnode)
-    {
-        if(leftnode==NULL&&rightnode==NULL) return true;
-        if(leftnode==NULL||rightnode==NULL||leftnode->val!=rightnode->val)  return false;
-        return solve(leftnode->right, rightnode->left)&&solve(leftnode->left, rightnode->right);
+    bool check(TreeNode* leftR,TreeNode* rightR){
+        if(leftR==NULL && rightR==NULL){
+            return true;
+        }else if(leftR==NULL){
+            return false;
+        }else if(rightR==NULL){
+            return false;
+        }
+        bool ans1=false,ans2=false;
+        if(leftR->val==rightR->val){
+            ans1=check(leftR->left,rightR->right);
+        }
+        if(leftR->val==rightR->val){
+            ans2=check(leftR->right,rightR->left);
+        }
+        if(ans1 && ans2){
+            return true;
+        }else{
+            return false;
+        }
     }
+    
     bool isSymmetric(TreeNode* root) {
-        if(root==NULL)  return true;
-        return solve(root->left, root->right);
-        
+        if(root==NULL){
+            return true;
+        }
+        if(root->left==NULL && root->right==NULL){
+            return true;
+        }
+        if(root->left==NULL || root->right==NULL){
+            return false;
+        }
+        if(root->left->val==root->right->val){
+            return check(root->left,root->right);
+        }
+        return 0;
     }
 };

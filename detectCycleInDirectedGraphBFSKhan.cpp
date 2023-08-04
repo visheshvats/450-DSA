@@ -1,57 +1,49 @@
-#include <iostream>
-#include<vector>
-#include<queue>
-
+#include<bits/stdc++.h>
 using namespace std;
 
-int detectCycleInDirectedGraph(int n, vector<pair<int, int>> &edges)
+bool dfs(int i, vector<bool> &vis, vector<bool> &path, vector<int> adj[])
 {
-    // Write your code here.
-    // defing adjacency matrix
-    vector<int> adj[n+1];
-    for (int i = 0; i < edges.size(); i++)
-    {
-        int u = edges[i].first;
-        int v = edges[i].second;
+    vis[i]=true;
+    path[i]=true;
 
-        adj[u].push_back(v);
+    for(auto it : adj[i])
+    {
+        if(!vis[it])
+        {
+            if(dfs(it,vis,path,adj))    return true;
+        }
+        else if(path[it])   return true;
     }
 
-    // calculating indegree
-    vector<int> indegree(n+1, 0);
-    for (int i = 1; i <= n; i++)
+
+
+
+
+    path[i]=false;
+    return false;
+
+}
+
+bool isCyclic(vector<vector<int>>& edges, int v, int e)
+{
+	// Write your code here
+    vector<bool> vis(v,0);
+    vector<bool> path(v,0);
+
+    vector<int> adj[v];
+
+    for(int i=0;i<e;i++)
     {
-        for (auto it : adj[i])
+        adj[edges[i][0]].push_back(edges[i][1]);
+    }
+    for(int i=0;i<v;i++)
+    {
+        if(!vis[i])
         {
-            indegree[it]++;
+            if(dfs(i,vis,path,adj)) return true;
         }
     }
 
-    queue<int> q;
+    return false;
 
-    for (int i = 1; i <= n; i++)
-    {
-        if (indegree[i] == 0)
-            q.push(i);
-    }
-    int cnt = 0;
-
-    while (!q.empty())
-    {
-        int n = q.front();
-        q.pop();
-        cnt++;
-        for (auto it : adj[n])
-        {
-            indegree[it]--;
-            if (indegree[it] == 0)
-            {
-                q.push(it);
-            }
-        }
-    }
-
-    if (cnt == n)
-        return 0;
-    return 1;
 }

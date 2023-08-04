@@ -12,24 +12,25 @@ struct TreeNode {
 
 class Solution {
 public:
-    int solve(TreeNode* root, int diameter)
+    int solve(TreeNode* node, int diameter)
     {
-        if(root==NULL)
-        {
+        if(node==NULL)
             return 0;
-        }
-        int lh = solve(root->left, diameter);
-        int rh = solve(root->right, diameter);
+        
+        int l = solve(node->left, diameter);
+        int r = solve(node->right, diameter);
 
-        diameter=max(diameter, lh+rh);
+        diameter = max(diameter,l+r);
+        return 1+max(l,r);
 
-        return 1+max(lh, rh);
 
     }
+    
     int diameterOfBinaryTree(TreeNode* root) {
-        int diameter=0;
+        int diameter =0;
         solve(root, diameter);
         return diameter;
+
         
     }
 };

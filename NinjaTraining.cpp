@@ -1,110 +1,109 @@
-#include<bits/stdc++.h>
+#include<bits/stdc++.h>;
 using namespace std;
 
-// int solve(int day, int last, vector<vector<int>> &points, int n, vector<vector<int>> &dp)
+// int solveMEM(int n,int x, vector<vector<int>> &points,vector<vector<int>> &dp)
 // {
 //     //bc
-//     if(day==0)
-//     {
-//         int man=0;
-//         for(int i=0;i<3;i++)
-//         {
-//             if(i!=last)
-//             {
-//                 man=max(man, points[0][i]);
-//             }
-//         }
+//     if(n<0) return 0;
 
-//         return man;
-//     }
+
 
 //     //rc
-//     if(dp[day][last]!=-1)
-//         return dp[day][last];
-//     int ans =0;
+//     if(dp[n][x]!=-1)    return dp[n][x];
+
+//     int ans=INT_MIN;
 //     for(int i=0;i<3;i++)
 //     {
-//         if(i!=last)
+//         if(i!=x)
 //         {
-//             int t = points[day][i]+solve(day-1,i,points, n,dp);
-//             ans=max(t,ans);
+//             ans=max(solveMEM(n-1,i,points,dp)+points[n][x],ans);
 //         }
 //     }
 
-//     return dp[day][last]=ans;
+//     return dp[n][x] = ans;
 // }
 
-int solveTAB(int n, vector<vector<int>> &p)
+// int solveTAB(int n, vector<vector<int>> &points)
+// {
+//     vector<vector<int>>dp(n,vector<int>(3,-1));
+
+//     int ans=INT_MIN;
+//     for(int i=0;i<n;i++)
+//     {
+//         for(int j=0;j<3;j++)
+//         {
+//             int ans = INT_MIN;
+//             for(int k=0;k<3;k++)
+//             {
+//                 if(k!=j&&i-1>=0)
+//                 {
+//                     ans = max(dp[i-1][k]+points[i][j],ans);
+//                 }
+//                 else if(k!=j&&i-1<=0)
+//                 {
+//                     ans=max(ans,points[i][j]);
+//                 }
+//             }
+
+//             dp[i][j]=ans;
+
+
+//         }
+//     }
+
+//     return max(dp[n-1][0],max(dp[n-1][2],dp[n-1][1]));
+
+// }
+
+int solveSO(int n, vector<vector<int>> &points)
 {
-    vector<vector<int>> dp(n, vector<int> (4,-1));
+    vector<vector<int>>dp(n,vector<int>(3,-1));
+    vector<int> dp1(n,-1);
+    vector<int> dpcurr(n,-1);
 
-    dp[0][0]=max(p[0][1],p[0][2]);
-    dp[0][1]=max(p[0][0],p[0][2]);
-    dp[0][2]=max(p[0][1],p[0][0]);
-    dp[0][3]=max(p[0][1],max(p[0][0],p[0][2]));
-
-    for(int day=1;day<n;day++)
+    int ans=INT_MIN;
+    for(int i=0;i<n;i++)
     {
-        for(int last=0;last<=3;last++)
+        for(int j=0;j<3;j++)
         {
-            dp[day][last]=0;
-            for(int task=0;task<3;task++)
+            int ans = INT_MIN;
+            for(int k=0;k<3;k++)
             {
-                if(task!=last)
+                if(k!=j&&i-1>=0)
                 {
-                    int t = p[day][task]+dp[day-1][task];
-                    dp[day][last]=max(t,dp[day][last]);
+                    ans = max(dp1[k]+points[i][j],ans);
+                }
+                else if(k!=j&&i-1<=0)
+                {
+                    ans=max(ans,points[i][j]);
                 }
             }
-        }
-    }  
 
-    return dp[n-1][3];  
-
-
-
-}
-
-int solveSO(int n, vector<vector<int>> &p)
-{
-    // vector<vector<int>> dp(n, vector<int> (4,-1));
-    vector<vector<int>> dp (2, vector<int> (4,-1));
-
-    dp[0][0]=max(p[0][1],p[0][2]);
-    dp[0][1]=max(p[0][0],p[0][2]);
-    dp[0][2]=max(p[0][1],p[0][0]);
-    dp[0][3]=max(p[0][1],max(p[0][0],p[0][2]));
-
-    for(int day=1;day<n;day++)
-    {
-        for(int last=0;last<=3;last++)
-        {
-            int t=0;
-            for(int task=0;task<3;task++)
-            {
-                if(task!=last)
-                {
-                    int t = p[day][task]+dp[0][task];
-                    dp[1][last]=max(t,dp[1][last]);
-                }
-            }
+            dpcurr[j]=ans;
             
+
+
         }
-        dp[0]=dp[1];
-    }  
+        dp1=dpcurr;
+    }
 
-    return dp[0][3];
+    return max(dp1[0],max(dp1[2],dp1[1]));
+
 }
-
 
 
 int ninjaTraining(int n, vector<vector<int>> &points)
 {
     // Write your code here.
-    // vector<vector<int>> dp(n,vector<int>(4,-1));
-    // int ans=solve(n-1,3, points, n,dp);
-    // int ans=solveTAB(n, points);
-    int ans=solveSO(n, points);
+    // int ans = INT_MIN;
+    // vector<vector<int>>dp(n,vector<int>(3,-1));
+    // for(int i=0;i<3;i++)
+    // {
+    //     ans = max(ans, solveMEM(n-1,i,points,dp));
+    // }
 
+    // int ans = solveTAB(n,points);
+    int ans = solveSO(n,points);
+     
     return ans;
 }

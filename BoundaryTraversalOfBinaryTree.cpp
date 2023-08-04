@@ -1,96 +1,88 @@
-#include <bits/stdc++.h>
+#include <bits/stdc++.h> 
 using namespace std;
 
-template <typename T>
-class TreeNode
-{
-public:
-    T data;
-    TreeNode<T> *left;
-    TreeNode<T> *right;
+    
+    template <typename T>
+    class TreeNode {
+        public :
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
 
-    TreeNode(T data)
+        TreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+
+        ~TreeNode() {
+            if(left)
+                delete left;
+            if(right)
+                delete right;
+        }
+    };
+
+    bool isLeaf(TreeNode<int>* node)
     {
-        this->data = data;
-        left = NULL;
-        right = NULL;
+        if(!node->left&&!node->right)   return true;
+        return false;
     }
 
-    ~TreeNode()
+    void addLeftTree(TreeNode<int> * node, vector<int> &r)
     {
-        if (left)
-            delete left;
-        if (right)
-            delete right;
-    }
-};
+        TreeNode<int> * curr = node->left;
+        while(curr)
+        {
+            r.push_back(curr->data);
+            if(curr->left)  curr= curr->left;
+            else curr=curr->right;
+        }
 
-bool isleaf(TreeNode<int> *root)
-{
-    if(root->left)  return false;
-    if(root->right)  return false;
-
-    return true;
-
-
-
-}
-
-void addLeftBoudary(TreeNode<int> *root, vector<int> &res)
-{
-    TreeNode<int> *node = root->left;
-    while(node)
-    {
-        if(!isleaf(node)) res.push_back(node->data);
-        if(node->left)  node= node->left;
-        else    node=node->right;
-    }
-}
-
-void addLeafNode(TreeNode<int>* root, vector<int>&res)
-{
-    if(isleaf(root))
-    {
-        res.push_back(root->data);
-        return ;
     }
 
-    if(root->left) addLeafNode(root->left, res);
-    if(root->right) addLeafNode(root->right, res);
-}
-
-void addRightBoudaryinReversal(TreeNode<int> *root, vector<int> &res)
-{
-    vector<int> temp;
-
-    TreeNode<int> *node = root->right;
-    while(node)
+    void addLeaf(TreeNode<int> * node, vector<int> & r)
     {
-        if(!isleaf(node)) temp.push_back(node->data);
-        if(node->right) node=node->right;
-        else node= node->left;
+        if(isLeaf(node))
+        {
+            r.push_back(node->data);
+        }
+
+        if(node->left)  addLeaf(node->left, r);
+        if(node->right)  addLeaf(node->right, r);
+
+    }
+
+    void addRightTree(TreeNode<int> * node, vector<int> & r)
+    {
+        vector<int> tmp;
+        TreeNode<int> * curr = node->right;
+        while(curr)
+        {
+            tmp.push_back(curr->data);
+            if(curr->right) curr=curr->right;
+            else curr=curr->left;
+
+        }
+
+        for(int i=tmp.size()-1;i>=0;i++)
+        {
+            r.push_back(tmp[i]);
+        }
+
     }
 
 
-
-    for(int i=temp.size()-1;i>=0;i--)
-    {
-        res.push_back(temp[i]);
-    }
-
-}
-
-vector<int> traverseBoundary(TreeNode<int> *root)
-{
+vector<int> traverseBoundary(TreeNode<int>* root){
     // Write your code here.
-    vector<int> res;
-    if(!root)   return res;
-    if(!isleaf(root))    res.push_back(root->data);
-    addLeftBoudary(root, res);
-    addLeafNode(root, res);
-    addRightBoudaryinReversal(root, res);
+    vector<int> ans;
+    if(root==NULL)  return ans;
+    if(!isLeaf(root))   ans.push_back(root->data);
+    addLeftTree(root, ans);
+    addLeaf(root, ans);
+    addRightTree(root, ans);
 
-    return res;
+    return ans;
 
 
 }

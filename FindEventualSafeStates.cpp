@@ -4,66 +4,55 @@ using namespace std;
 class Solution {
 public:
 
-    bool dfs(int i, vector<vector<int>> &graph, vector<bool> &vis, vector<bool> &pathvis, vector<int> &check)
+    bool dfs(int node, vector<bool> &vis, vector<bool> &path,vector<bool> &check, vector<vector<int>> &adj)
     {
-        vis[i]=true;
-        pathvis[i]=true;
-
-        for (auto it:graph[i])
+        vis[node]=true;
+        path[node]=true;
+        for(auto it: adj[node])
         {
             if(!vis[it])
             {
-                if(dfs(it, graph, vis, pathvis, check)==true)
-                    {
-                        check[i]=0;
-                        return true;
-                    }
+                if(dfs(it, vis, path,check, adj)==false)
+                {
+                    check[node]=false;
+                    return false;
+                }  
+            }
+            else if(path[it])
+            {
+                return false;
             }
 
-            else if(pathvis[it])
-                {
-                    check[i]=0;
-                    return true;
-                }
         }
 
-        pathvis[i]=false;
-        check[i]=true;
 
-        return false;
-        
-
+        check[node]=true;
+        path[node]=false;
+        return true;;
     }
-    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        int n= graph.size();
-
-        vector<bool> pathvis(n,0);
-        vector<int> ans;
-        vector<int> check(n, 0);
+    vector<int> eventualSafeNodes(vector<vector<int>>& adj) {
+        int v = adj.size();
         
 
-        vector<bool> vis(n,0);
-        for (int i = 0; i < graph.size(); i++)
+        vector<bool> vis(v,0);
+        vector<bool> path(v,0);
+        vector<bool> check(v,0);
+
+        for(int i=0;i<v;i++)
         {
-            /* code */
             if(!vis[i])
             {
-                dfs(i,graph, vis, pathvis,check);
+                dfs(i,vis,path,check,adj);
             }
-
-
         }
 
-        for (int i = 0; i < n; i++)
+        vector<int> ans;
+        for(int i=0;i<v;i++)
         {
-            /* code */
-            if(check[i]==1)
-                ans.push_back(i);
+            if(!check[i])    ans.push_back(i);
         }
 
         return ans;
-        
-        
         
     }
 };

@@ -3,53 +3,67 @@ using namespace std;
 
 class Solution {
 public:
-    int solve(int n, vector<int> &dp)
-    {
-        //bc
-        if(n<=0)    return 0;
-        if(n==1)    return 1;
-        if(n==2)    return 2;
+    // int solve(int n)
+    // {
+    //     //bc
+    //     if(n==1) return 1;
+    //     if(n==2)    return 2;
 
-        //rc
-        if(dp[n]!=-1)   return dp[n];
+    //     //rc
+    //     return solve(n-1)+solve(n-2);
 
-        int a = solve(n-1,dp);
-        int b= solve(n-2,dp);
-        return dp[n]=a+b;
-    }
-    int solveTAB(int n)
-    {
-        if(n<=0)    return 0;
-        if(n==1)    return 1;
-        if(n==2)    return 2;
-        vector<int> dp(n+1,0);
-        dp[0]=0;
-        dp[1]=1;
-        dp[2]=2;
-        for(int i=3;i<=n;i++)
-        {
-            dp[i]=dp[i-1]+dp[i-2];
-        }
-        return dp[n];
-    }
+    // }
+
+    // int solveMEM(int n,vector<int> &dp)
+    // {
+    //     //bc
+    //     if(n==1) return 1;
+    //     if(n==2)    return 2;
+
+    //     //rc
+    //     if(dp[n]!=-1)   return dp[n];
+    //     return dp[n]=solveMEM(n-1,dp)+solveMEM(n-2,dp);
+
+    // }
+    // int solveTAB(int n)
+    // {
+    //     vector<int> dp(n+1,0);
+    //     //bc
+    //     dp[1]=1;
+    //     dp[2]=2;
+
+    //     for(int i=3;i<n+1;i++)
+    //     {
+    //         dp[i]=dp[i-1]+dp[i-2];
+    //     }
+
+    //     return dp[n];
+
+    // }
+
     int solveSO(int n)
     {
-        if(n<=0)    return 0;
-        if(n==1)    return 1;
-        if(n==2)    return 2;
-        int curr;
-        int prev2=1;
-        int prev1=2;
-        for(int i=3;i<=n;i++)
+        vector<int> dp(n+1,0);
+        //bc
+        int a =1;
+        int b =2;
+        int c;
+
+        for(int i=3;i<n+1;i++)
         {
-            curr=prev2+prev1;
+            c=b+a;
+            a=b;
+            b=c;
         }
-        return curr;
+
+        return c;
+
     }
+
     int climbStairs(int n) {
         // vector<int> dp(n+1,-1);
-        // int ans = solve(n,dp);
-        // int ans = solveTAB(n);
+        if(n==1)    return 1;
+        if(n==2)    return 2;
         int ans = solveSO(n);
         return ans;
         

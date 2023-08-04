@@ -1,72 +1,74 @@
+//{ Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
-class Solution
-{
-public:
-    bool checkForCycle(int i, int V, vector<int> adj[], vector<bool> vis)
+
+// } Driver Code Ends
+class Solution {
+  public:
+    bool solveBFS(int src, int V, vector<int> adj[], vector<bool> &vis)
     {
-        queue<pair<int, int>> q;
-        vis[i]=true;
-        q.push({i,-1});
+        vis[src]=true;
+        queue<pair<int,int>> q;
+        q.push({src,-1});
+
         while(!q.empty())
         {
-            int node = q.front().first;
-            int par = q.front().second;
+            auto it  = q.front();
             q.pop();
-            for( auto it : adj[node])
-            {
-                if(!vis[it])
-                {
-                    vis[it]=true;
-                    q.push({it, node});
-                }
-                if(it!=par)
-                    return true;
-            }
 
+            int node = it.first;
+            int parentnode = it.second;
+            for(auto nextnode :adj[node])
+            {
+                if(!vis[nextnode])
+                {
+                    vis[nextnode]=true;
+                    q.push({nextnode,node});
+                }
+                else if(nextnode!=parentnode)
+                    return true;
+
+            }
         }
 
-        
-        
-        
-        
         return false;
     }
-    
-    bool isCycle(int V, vector<int> adj[])
-    {
-        vector<bool> vis(V+1,0);
-        for(int i=1;i<=V;i++)
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(int V, vector<int> adj[]) {
+        // Code here
+        vector<bool> vis(V,0);
+        bool ans =false;
+        for(int i=0;i<V;i++)
         {
             if(!vis[i])
-                if(checkForCycle(i,V,adj,vis))
-                    return true;
+                if(solveBFS(i,V,adj,vis))  return true;
         }
-        return false;
+        // bool ans = solveBFS(0,V,adj,vis);
+        return ans;
     }
 };
- 
-void addEdge(vector<int> adj[],int u,int v)
-{
-    adj[u].push_back(v);
-    adj[v].push_back(u);
-}
-int main()
-{
-    vector<int> adj[5];
-   
-    addEdge(adj,0,1);
-    addEdge(adj,0,2);
-    addEdge(adj,2,3);
-    addEdge(adj,1,3);
-    addEdge(adj,2,4);
-   
-    Solution obj;
-    int num=obj.isCycle(5, adj);
-    if(num==1)
-    cout<<"Yes"<<endl;
-    else
-    cout<<"No"<<endl;
- 
+
+//{ Driver Code Starts.
+int main() {
+    int tc;
+    cin >> tc;
+    while (tc--) {
+        int V, E;
+        cin >> V >> E;
+        vector<int> adj[V];
+        for (int i = 0; i < E; i++) {
+            int u, v;
+            cin >> u >> v;
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        Solution obj;
+        bool ans = obj.isCycle(V, adj);
+        if (ans)
+            cout << "1\n";
+        else
+            cout << "0\n";
+    }
     return 0;
 }
+// } Driver Code Ends
